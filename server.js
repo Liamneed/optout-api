@@ -45,6 +45,7 @@ app.delete('/optouts/:number', (req, res) => {
 // ✅ Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 API running at http://localhost:${PORT}`);
+  console.log(`🚀 OPT-OUT API running on port ${PORT}`);
+
 });
 
