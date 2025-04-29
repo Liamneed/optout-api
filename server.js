@@ -3,17 +3,20 @@ const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
-app.use(cors()); // ✅ This line enables CORS
-
 const db = new sqlite3.Database('./optouts.db');
+
+// ✅ Enable CORS for requests from your HTML frontend
+app.use(cors());
+
+// ✅ Allow JSON body parsing
 app.use(express.json());
 
-
+// ✅ Create table if it doesn't exist
 db.run(`CREATE TABLE IF NOT EXISTS optouts (
   number TEXT PRIMARY KEY
 )`);
 
-// Get all opt-out numbers
+// ✅ Get all opt-out numbers
 app.get('/optouts', (req, res) => {
   db.all('SELECT number FROM optouts', [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -21,7 +24,7 @@ app.get('/optouts', (req, res) => {
   });
 });
 
-// Add new opt-out number
+// ✅ Add a number to the opt-out list
 app.post('/optouts', (req, res) => {
   const { number } = req.body;
   if (!number) return res.status(400).json({ error: 'Missing number' });
@@ -31,7 +34,7 @@ app.post('/optouts', (req, res) => {
   });
 });
 
-// Remove opt-out number
+// ✅ Remove a number from the opt-out list
 app.delete('/optouts/:number', (req, res) => {
   db.run('DELETE FROM optouts WHERE number = ?', [req.params.number], err => {
     if (err) return res.status(500).json({ error: err.message });
@@ -39,5 +42,8 @@ app.delete('/optouts/:number', (req, res) => {
   });
 });
 
+// ✅ Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 API running at http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`🚀 API running at http://localhost:${PORT}`);
+});
