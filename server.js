@@ -3,10 +3,11 @@ const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
-const db = new sqlite3.Database('./optouts.db');
+app.use(cors()); // ✅ This line enables CORS
 
-app.use(cors());
+const db = new sqlite3.Database('./optouts.db');
 app.use(express.json());
+
 
 db.run(`CREATE TABLE IF NOT EXISTS optouts (
   number TEXT PRIMARY KEY
